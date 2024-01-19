@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+        ddl-auto: create
+    defer-datasource-initialization: true
+  h2:
+    console:
+      enable: true
+
+management:
+  health:
+    ldap:
+      enabled: false
+  endpoints:
+    web:
+      base-path: /api/actuator
+      exposure.include: health
+
+booking:
+  validation:
+    currentDay:
+      enable: ${CURRENT_DAY_VALIDATION_ENABLE:true}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: ${API_DOCS_ENABLED:true}
+  swagger-ui:
+    enabled: ${SWAGGER_UI_ENABLED:true}
+    path: /swagger-ui.html
+    configUrl: /v3/api-docs/swagger-config
+    url: /v3/api-docs
+    use-root-path: true
+    disable-swagger-default-url: true
+
