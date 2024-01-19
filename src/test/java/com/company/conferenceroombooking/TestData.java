@@ -116,11 +116,11 @@ public class TestData {
 
     public static Supplier<List<MaintenanceTime>> MAINTENANCE_TIME_LIST = () ->
             List.of(MaintenanceTime.builder()
-                    .startTime(LocalTime.of(9,15))
-                    .endTime(LocalTime.of(9,0))
+                    .startTime(LocalTime.of(9,00))
+                    .endTime(LocalTime.of(9,15))
                     .build(), MaintenanceTime.builder()
-                            .startTime(LocalTime.of(15,15))
-                            .endTime(LocalTime.of(15,0))
+                            .startTime(LocalTime.of(15,00))
+                            .endTime(LocalTime.of(15,15))
                             .build()
                     );
 
