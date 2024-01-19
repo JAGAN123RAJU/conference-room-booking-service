@@ -1,9 +1,7 @@
 package com.company.conferenceroombooking.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 
@@ -12,6 +10,8 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder(toBuilder = true)
+@AllArgsConstructor
 public class MaintenanceTime extends BaseEntity{
 
     @Id

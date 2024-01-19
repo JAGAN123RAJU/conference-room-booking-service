@@ -1,6 +1,7 @@
 package com.company.conferenceroombooking.validator;
 
 
+import com.company.conferenceroombooking.TestData;
 import com.company.conferenceroombooking.constants.ConferenceRoomBookingConstants;
 import com.company.conferenceroombooking.domain.request.ConferenceRoomBookingRequestDto;
 import com.company.conferenceroombooking.exception.ConferenceRoomBookingRequestException;
@@ -29,68 +30,38 @@ public class BookingValidatorTest {
 
     @Test
     public void testAccept() {
-        ConferenceRoomBookingRequestDto bookingRequestDto1 = ConferenceRoomBookingRequestDto.builder()
-                .empEmailId("jagan@aamil.com")
-                .meetingDate(LocalDate.now().format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.DATE_FORMATTER)))
-                .startTime(LocalTime.now().plusMinutes(1).format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.TIME_FORMATTER)))
-                .endTime(LocalTime.now().plusHours(1).format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.TIME_FORMATTER)))
-                .participantCount(2)
-                .build();
-        bookingRequestValidator.accept(bookingRequestDto1);
+        bookingRequestValidator.accept(TestData.CONFERENCE_ROOM_BOOKING_REQUEST_POSITIVE_SCENARIO.get());
+    }
+
+    @Test(expected = ConferenceRoomBookingRequestException.class)
+    public void testAcceptExceptionWithOnlyOneParticipant() {
+        bookingRequestValidator.accept(TestData.CONFERENCE_ROOM_BOOKING_REQUEST_WITH_ONE_PARTICIPANT_SCENARIO.get());
     }
 
     @Test(expected = ConferenceRoomBookingRequestException.class)
     public void testAcceptExceptionWithDateLaterThanCurrent() {
-        ConferenceRoomBookingRequestDto bookingRequestDto = ConferenceRoomBookingRequestDto.builder()
-                .empEmailId("jagan@aamil.com")
-                .meetingDate(LocalDate.now().format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.DATE_FORMATTER)))
-                .startTime("09:00")
-                .endTime("10:00")
-                .participantCount(1)
-                .build();
-        bookingRequestDto.setMeetingDate(LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.DATE_FORMATTER)));
-        bookingRequestValidator.accept(bookingRequestDto);
+        bookingRequestValidator.accept(TestData.CONFERENCE_ROOM_BOOKING_REQUEST_WITH_DATE_LATER_THAN_CURRENT_SCENARIO.get());
     }
 
     @Test(expected = ConferenceRoomBookingRequestException.class)
     public void testAcceptExceptionWithStartTimeGreater() {
-        ConferenceRoomBookingRequestDto bookingRequestDto = ConferenceRoomBookingRequestDto.builder()
-                .empEmailId("jagan@aamil.com")
-                .meetingDate(LocalDate.now().format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.DATE_FORMATTER)))
-                .startTime("09:00")
-                .endTime("10:00")
-                .participantCount(1)
-                .build();
-        bookingRequestDto.setStartTime("02:00");
-        bookingRequestDto.setEndTime("01:00");
-        bookingRequestValidator.accept(bookingRequestDto);
+        bookingRequestValidator.accept(TestData.CONFERENCE_ROOM_BOOKING_REQUEST_WITH_START_TIME_GREATER_SCENARIO.get());
     }
 
     @Test(expected = ConferenceRoomBookingRequestException.class)
     public void testAcceptExceptionWithTimeSlotExceepingToNextDay() {
-        ConferenceRoomBookingRequestDto bookingRequestDto = ConferenceRoomBookingRequestDto.builder()
-                .empEmailId("jagan@aamil.com")
-                .meetingDate(LocalDate.now().format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.DATE_FORMATTER)))
-                .startTime("09:00")
-                .endTime("10:00")
-                .participantCount(1)
-                .build();
-        bookingRequestDto.setStartTime("23:45");
-        bookingRequestDto.setEndTime("00:15");
-        bookingRequestValidator.accept(bookingRequestDto);
+        bookingRequestValidator.accept(TestData.CONFERENCE_ROOM_BOOKING_REQUEST_WITH_TIME_SLOT_EXCEEDING_TO_NEXT_DAY_SCENARIO.get());
     }
 
     @Test(expected = ConferenceRoomBookingRequestException.class)
     public void testAcceptWithoutDateTime() {
-        ConferenceRoomBookingRequestDto bookingRequestDto = ConferenceRoomBookingRequestDto.builder()
-                .empEmailId("jagan@aamil.com")
-                .meetingDate(LocalDate.now().format(DateTimeFormatter.ofPattern(ConferenceRoomBookingConstants.DATE_FORMATTER)))
-                .startTime("09:00")
-                .endTime("10:00")
-                .participantCount(1)
-                .build();
-        bookingRequestDto.setMeetingDate("");
-        bookingRequestValidator.accept(bookingRequestDto);
+        bookingRequestValidator.accept(TestData.CONFERENCE_ROOM_BOOKING_REQUEST_WITHOUT_DATE_TIME_SCENARIO.get());
     }
+
+    @Test(expected = ConferenceRoomBookingRequestException.class)
+    public void testAcceptExceptionWithTimeSlotBeforeCurrentTimeException() {
+        bookingRequestValidator.accept(TestData.CONFERENCE_ROOM_BOOKING_REQUEST_WITH_TIMESLOT_BEFORE_CURRENT_TIME_SCENARIO.get());
+    }
+
 
 }

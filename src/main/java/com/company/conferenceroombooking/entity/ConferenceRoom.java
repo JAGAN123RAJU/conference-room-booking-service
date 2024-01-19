@@ -1,9 +1,7 @@
 package com.company.conferenceroombooking.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder(toBuilder = true)
+@AllArgsConstructor
 public class ConferenceRoom extends BaseEntity {
 
     @Id

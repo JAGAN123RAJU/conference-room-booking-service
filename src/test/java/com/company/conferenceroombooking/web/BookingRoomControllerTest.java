@@ -1,8 +1,8 @@
 package com.company.conferenceroombooking.web;
 
+import com.company.conferenceroombooking.TestData;
 import com.company.conferenceroombooking.domain.request.ConferenceRoomBookingRequestDto;
 import com.company.conferenceroombooking.domain.response.ConferenceRoomBookingResponseDto;
-import com.company.conferenceroombooking.domain.response.ConferenceRoomResponseDto;
 import com.company.conferenceroombooking.domain.response.ResponseDto;
 import com.company.conferenceroombooking.service.ConferenceRoomBookingService;
 import org.junit.Before;
@@ -11,10 +11,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
@@ -27,8 +28,6 @@ public class BookingRoomControllerTest {
     @Mock
     ConferenceRoomBookingService bookingService;
 
-    List<ConferenceRoomResponseDto> conferenceRoomResponseDtos;
-
     ConferenceRoomBookingRequestDto conferenceRoomBookingRequestDto;
 
     ConferenceRoomBookingResponseDto responseDto;
@@ -36,14 +35,8 @@ public class BookingRoomControllerTest {
 
     @Before
     public void setUp() {
-        responseDto = ConferenceRoomBookingResponseDto.builder().conferenceBookingId("1").capacity(3).roomName("Amaze").build();
-        conferenceRoomBookingRequestDto  = ConferenceRoomBookingRequestDto.builder().
-                participantCount(1).
-                startTime("01:00").
-                endTime("02:00").
-                empEmailId("jaganm@mashreq.com").
-                meetingDate("16/04/2023").
-                build();
+        responseDto = TestData.CONFERENCE_ROOM_BOOKING_RESPONSE_DTO.get();
+        conferenceRoomBookingRequestDto  = TestData.CONFERENCE_ROOM_BOOKING_REQUEST_DTO.get();
 
     }
 
@@ -53,5 +46,7 @@ public class BookingRoomControllerTest {
         ResponseEntity<ResponseDto> response = bookingController.bookConferenceRoom(conferenceRoomBookingRequestDto);
         assertNotNull(response);
         assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
     }
 }

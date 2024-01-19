@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -110,10 +111,10 @@ public class ConferenceBookingRoomServiceTest {
 
     @Test
     public void testBookAConferenceRoom() {
-        lenient().when(roomServiceHelper.getAvailableConferenceRoomForBooking( bookingRequest)).thenReturn(conferenceRoom);
-        lenient().when(mapper.apply(bookingRequest, conferenceRoom)).thenReturn(roomBooking);
-        lenient().when(roomBookingRepository.save(roomBooking)).thenReturn(roomBooking);
-        lenient().when(bookingServiceHelper.processResponse(roomBooking)).thenReturn(responseDto);
+        lenient().when(roomServiceHelper.getAvailableConferenceRoomForBooking( any())).thenReturn(conferenceRoom);
+        lenient().when(mapper.apply(any(), any())).thenReturn(roomBooking);
+        lenient().when(roomBookingRepository.save(any())).thenReturn(roomBooking);
+        lenient().when(bookingServiceHelper.processResponse(any())).thenReturn(responseDto);
 
         ConferenceRoomBookingResponseDto response = bookingService.bookConferenceRoom(bookingRequest);
         assertNotNull(response);
